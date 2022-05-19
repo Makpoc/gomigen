@@ -1,14 +1,22 @@
 # Go Middleware Generator
 
+![build](https://github.com/Makpoc/gomigen/workflows/Go/badge.svg)
+![lint](https://github.com/Makpoc/gomigen/workflows/golangci-lint/badge.svg)
+[![Go Reference](https://pkg.go.dev/badge/github.com/Makpoc/gomigen.svg)](https://pkg.go.dev/github.com/Makpoc/gomigen)
+
 This tool can generate a generic middleware, that injects hooks around
 the invocations of given interface' methods.
+
+This tool is heavily inspired by [gentools](https://github.com/Bo0mer/gentools) and
+[counterfeiter](https://github.com/maxbrunsfeld/counterfeiter/)
 
 # Description
 
 The generated middleware wraps around another implementation of the same interface
-and calls specific hooks at specific points in the execution.
+and calls specific hooks at specific points of the execution.
 
 Given the following interface and `go:generate` command
+
 ```go
 //go:generate go run github.com/Makpoc/gomigen/cmd/gomigen . Interface
 type Interface interface {
@@ -17,9 +25,9 @@ type Interface interface {
 }
 ```
 
-running `go:generate` will produce the following Middleware:
+running `go:generate` will produce the following middleware:
 
-* Struct:
+### Struct
 
 The generated struct implements the Interface
 
@@ -30,17 +38,14 @@ type InterfaceMiddleware struct {
 }
 ```
 
-* Constructor
+### Constructor
 
 The middleware constructor wraps another implementation of that interface
 and also accepts a hook implementation, that will be called when a method of
 this middleware is called.
 
 ```go
-func NewInterfaceMiddleware(
-	next interfaces.Interface,
-	hook types.Hook,
-) *InterfaceMiddleware {
+func NewInterfaceMiddleware(next interfaces.Interface, hook types.Hook) *InterfaceMiddleware {
 	return &InterfaceMiddleware{
 		next: next,
 		hook: hook,
@@ -48,14 +53,12 @@ func NewInterfaceMiddleware(
 }
 ```
 
-* Methods
+### Methods
 
-Each generated method calls the OnEntry hook, then calls the wrapped Interface
-implementation and finally calls the OnExit hook.
+Each generated method calls the `OnEntry` hook method, then calls the wrapped Interface
+implementation and finally calls the `OnExit` hook method.
 
-Depending on that method arguments and return parameters the hooks and the
-wrapped method receive different values. See the inlined comments for notable
-differences.
+Depending on the wrapped method's signature the generated middleware method's implementation varies:
 
 ```go
 func (mw *InterfaceMiddleware) ProcessOne(arg0 string) (string, error) {
@@ -91,38 +94,37 @@ func (mw *TwoMethodsWithArgAndReturnMiddleware) ProcessTwo(arg0 context.Context,
 	mw.hook.OnExit(ctx, methodInfo, nil)
 	return res0
 }
-
 ```
 
-All hooks accept a `Context` they can extract values from as well as `MethodInfo`, containing
-information about the method being invoked. Some hooks accept additional parameters also
-return a value. These are covered below.
+All hook methods accept a `Context` they can extract values from as well as `MethodInfo`, containing
+information about the method being invoked.
 
 If the Interface method accepts a `context.Context` as its first parameter it will be passed
 to all hooks and the wrapped method. If the first parameter is not a context, a
-`context.Background()` context will be instantiated and passed to all hooks instead.
+`context.Background()` context will be instantiated and passed to all hook methods instead.
 
-### OnEntry
+#### OnEntry
 
 ```go
 OnEntry(context.Context, MethodInfo) context.Context
 ```
 
-This hook is called just before the wrapped method is called.
+This hook method is called just before the wrapped method is invoked.
 
-It returns a `context` that is passed to the rest of the hooks as well as to the
-wrapped method. Hook implementations can use this to store and communicate values
-within a method call context (e.g. span start/end, processing duration etc.)
+It returns a `context` that is passed to the `OnExit` hook methods as well as to the
+wrapped method (if it accepts a context as its first argument). Hook implementations can
+use this to store and communicate values within a method call context (e.g. span
+start/end, processing duration etc.)
 
-### OnExit
+#### OnExit
 
 ```go
 mw.hook.OnExit(context.Context, MethodInfo, error)
 ```
 
-This hook is called right after the wrapped method returns. If the wrapped
-method's last return parameter was of type `error` it is passed to the OnExit
-method. If not - OnExit gets nil.
+This hook method is called right after the wrapped method returns. If the wrapped
+method's last return parameter is of type `error` it is passed to the OnExit
+method. If not - the error parameter is set to `nil`.
 
 # Usage
 
@@ -146,7 +148,7 @@ package to the `tools.go` file (see below).
 
 ### Go Generate
 
-Simply inject a go comment like you would with counterfeiter or gentools
+Simply inject a go:generate comment like the following:
 
 ```go
 //go:generate go run github.com/Makpoc/gomigen/cmd/gomigen . InterfaceName
@@ -171,8 +173,9 @@ import (
 # TODOs
 
 * Support extracting a context from `http.Request` parameter
-* Support the model counterfeiter uses with a custom `//<tool>:generate` declaration for faster execution.
+* Support the model counterfeiter uses with a
+custom `//<tool>:generate` declaration for faster execution.
 * Create a package with hooks for error logging, monitoring and tracing.
-* Optionally expose an option to generate a template that doesn't need to import the `types` package
+* Optionally expose an argument to generate a template that doesn't need to import the `types` package
   * The hooks interface can be inlined
   * MethodInfo can be turned into a `map[string]string`
