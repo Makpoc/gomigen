@@ -14,6 +14,11 @@ import (
 	"github.com/Makpoc/gomigen/internal/version"
 )
 
+var (
+	// capitalLetterRegex captures each capital letter in a match group.
+	capitalLetterRegex = regexp.MustCompile("([A-Z])")
+)
+
 type Logger interface {
 	Printf(format string, v ...interface{})
 }
@@ -40,18 +45,16 @@ func New(pkgDir, interfaceName string, opts ...Option) *App {
 }
 
 func (a *App) Run() error {
-	a.logger.Printf("Looking for interface %q in %q", a.interfaceName, a.pkgDir)
 	middleware, err := parser.Parse(a.pkgDir, a.interfaceName)
 	if err != nil {
-		return fmt.Errorf("failed to parse interface: %w", err)
+		return fmt.Errorf("failed to parse interface %q: %w",
+			a.interfaceName, err)
 	}
 
-	interfaceWithPkgPath := fmt.Sprintf("%s.%s", middleware.OriginalPackage.Path, middleware.InterfaceName)
-
-	a.logger.Printf("Generating middleware for interface %q", interfaceWithPkgPath)
 	source, err := generator.GenerateSource(middleware, a.version)
 	if err != nil {
-		return fmt.Errorf("failed to generate middleware: %w", err)
+		return fmt.Errorf("failed to generate middleware for interface %q: %w",
+			a.interfaceName, err)
 	}
 
 	outputDir := path.Join(a.pkgDir, middleware.GenPackage)
@@ -61,17 +64,21 @@ func (a *App) Run() error {
 
 	outputFilePath := path.Join(outputDir, snakeCase(middleware.InterfaceName)+".go")
 
-	a.logger.Printf("Saving middleware for interface %q to %q", interfaceWithPkgPath, outputFilePath)
 	err = save(source, outputFilePath)
 	if err != nil {
 		return fmt.Errorf("failed to save generated middleware to %q: %w", outputFilePath, err)
 	}
+
+	interfaceWithPkgPath := fmt.Sprintf("%s.%s",
+		middleware.OriginalPackage.Path, middleware.InterfaceName)
+	a.logger.Printf("Generated middleware for interface %q in %q",
+		interfaceWithPkgPath, outputFilePath)
+
 	return err
 }
 
 func snakeCase(s string) string {
-	re := regexp.MustCompile("([A-Z])")
-	return strings.ToLower(strings.TrimPrefix(re.ReplaceAllString(s, "_${1}"), "_"))
+	return strings.ToLower(strings.TrimPrefix(capitalLetterRegex.ReplaceAllString(s, "_${1}"), "_"))
 }
 
 func save(source []byte, filePath string) error {

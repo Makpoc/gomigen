@@ -47,7 +47,7 @@ func loadInterface(dir string, interfaceName string) (pkg *packages.Package, ifa
 		Mode: packages.NeedName | packages.NeedImports | packages.NeedTypes,
 	}, dir)
 	if err != nil {
-		return nil, nil, fmt.Errorf("failed to load package in directory %q: %w", dir, err)
+		return nil, nil, fmt.Errorf("failed to load packages in directory %q: %w", dir, err)
 	}
 	if len(p) == 0 {
 		return nil, nil, fmt.Errorf("no go packages found in directory %q", dir)
