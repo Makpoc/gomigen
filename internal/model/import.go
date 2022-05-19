@@ -20,8 +20,8 @@ type Imports struct {
 
 func newImports() *Imports {
 	return &Imports{
-		byAlias:   make(map[string]Import, 0),
-		byPackage: make(map[string]Import, 0),
+		byAlias:   make(map[string]Import),
+		byPackage: make(map[string]Import),
 	}
 }
 

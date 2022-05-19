@@ -18,7 +18,7 @@ var _ = Describe("Middleware", func() {
 			Expect(impStatements).To(ContainElement(HaveField("Package", "context")))
 
 			Expect(impStatements).To(ContainElement(HaveField("Alias", "")))
-			Expect(impStatements).To(ContainElement(HaveField("Package", HaveSuffix("/middleware/types"))))
+			Expect(impStatements).To(ContainElement(HaveField("Package", "github.com/Makpoc/gomigen/types")))
 		})
 	})
 })
