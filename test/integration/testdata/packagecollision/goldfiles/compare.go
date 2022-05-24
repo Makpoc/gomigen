@@ -8,6 +8,8 @@ import (
 	"github.com/Makpoc/gomigen/test/integration/testdata/packagecollision"
 	"github.com/Makpoc/gomigen/test/integration/testdata/packagecollision/a/foo"
 	foo0 "github.com/Makpoc/gomigen/test/integration/testdata/packagecollision/b/foo"
+	foo1 "github.com/Makpoc/gomigen/test/integration/testdata/packagecollision/dotimported/foo"
+	foo2 "github.com/Makpoc/gomigen/test/integration/testdata/packagecollision/renamedpackage/bar"
 	"github.com/Makpoc/gomigen/types"
 )
 
@@ -29,7 +31,7 @@ func NewCompareMiddleware(
 	}
 }
 
-func (mw *CompareMiddleware) Equals(arg0 foo.Foo, arg1 foo0.Foo) bool {
+func (mw *CompareMiddleware) Equals(arg0 foo.Foo, arg1 foo0.Foo, arg2 foo1.Foo, arg3 foo2.Foo) bool {
 	methodInfo := types.MethodInfo{
 		Package:   "github.com/Makpoc/gomigen/test/integration/testdata/packagecollision",
 		Interface: "Compare",
@@ -39,7 +41,7 @@ func (mw *CompareMiddleware) Equals(arg0 foo.Foo, arg1 foo0.Foo) bool {
 	ctx := context.Background()
 
 	ctx = mw.hook.OnEntry(ctx, methodInfo)
-	res0 := mw.next.Equals(arg0, arg1)
+	res0 := mw.next.Equals(arg0, arg1, arg2, arg3)
 	mw.hook.OnExit(ctx, methodInfo, nil)
 	return res0
 }

@@ -88,3 +88,8 @@ type ExtendsAnotherInterface interface {
 	io.Writer
 	Close() error
 }
+
+type ComposeOverlappingInterfaces interface {
+	io.WriteCloser
+	io.ReadCloser
+}
