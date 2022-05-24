@@ -9,11 +9,7 @@ import (
 	"github.com/Makpoc/gomigen/types"
 )
 
-type ctxKey string
-
-const (
-	startTimeKey ctxKey = "startTime"
-)
+type ctxStartTimeKey struct{}
 
 // LogHook is an example of a hook that logs messages on entry and exit and the time interval
 // between they are called.
@@ -31,22 +27,20 @@ func New(log *log.Logger) *LogHook {
 
 func (l *LogHook) OnEntry(ctx context.Context, info types.MethodInfo) context.Context {
 	startTime := time.Now()
-	ctx = context.WithValue(ctx, startTimeKey, startTime)
 	l.logger.Printf("Entered %s at %s",
 		formatMethodInfo(info), startTime,
 	)
-	return ctx
+	return context.WithValue(ctx, ctxStartTimeKey{}, startTime)
 }
 
 func (l *LogHook) OnExit(ctx context.Context, info types.MethodInfo, err error) {
-	duration := "unknown"
-	startTime := ctx.Value(startTimeKey)
-	if startTime != nil {
-		duration = time.Since(startTime.(time.Time)).String()
+	startTime := ctx.Value(ctxStartTimeKey{}).(time.Time)
+	result := "ok"
+	if err != nil {
+		result = fmt.Sprintf("error: %v", err)
 	}
-
-	l.logger.Printf("Exited %s after spending %s in it",
-		formatMethodInfo(info), duration,
+	l.logger.Printf("Exited %s after spending %s in it. Result: %s",
+		formatMethodInfo(info), time.Since(startTime).String(), result,
 	)
 }
 
