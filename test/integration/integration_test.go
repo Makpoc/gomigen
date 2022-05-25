@@ -33,7 +33,7 @@ var _ = Describe("Integration", func() {
 		BeforeEach(func() {
 			// Comment out this line to keep all generated files after execution
 			// (e.g. if you want to use them as gold-files *after careful review*
-			//Expect(cleanupGeneratedFiles(generatedDirRelPath)).To(Succeed())
+			Expect(cleanupGeneratedFiles(generatedDirRelPath)).To(Succeed())
 		})
 
 		DescribeTable("",
