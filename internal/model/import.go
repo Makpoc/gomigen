@@ -18,7 +18,7 @@ type Imports struct {
 	byPackage map[string]Import
 }
 
-func newImports() *Imports {
+func NewImports() *Imports {
 	return &Imports{
 		byAlias:   make(map[string]Import),
 		byPackage: make(map[string]Import),

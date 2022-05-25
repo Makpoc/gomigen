@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"path"
 	"path/filepath"
 	"regexp"
 	"strings"
@@ -57,12 +56,12 @@ func (a *App) Run() error {
 			a.interfaceName, err)
 	}
 
-	outputDir := path.Join(a.pkgDir, middleware.GenPackage)
+	outputDir := filepath.Join(a.pkgDir, middleware.GenPackage)
 	if a.outputDirectory != "" {
-		outputDir = path.Join(a.outputDirectory, middleware.GenPackage)
+		outputDir = filepath.Join(a.outputDirectory, middleware.GenPackage)
 	}
 
-	outputFilePath := path.Join(outputDir, snakeCase(middleware.InterfaceName)+".go")
+	outputFilePath := filepath.Join(outputDir, snakeCase(middleware.InterfaceName)+".go")
 
 	err = save(source, outputFilePath)
 	if err != nil {

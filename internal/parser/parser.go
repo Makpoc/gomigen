@@ -76,7 +76,7 @@ func processMethod(middleware *model.Middleware, method *types.Selection) error 
 	if !ok {
 		// for go 1.17 interface this should not happen.
 		// TODO test with go 1.18 and interface with generic constraints.
-		return nil
+		return fmt.Errorf("unexpected method type: expected Func, got: %+v", method.Obj())
 	}
 	m := model.Method{
 		Name: f.Name(),
@@ -84,7 +84,7 @@ func processMethod(middleware *model.Middleware, method *types.Selection) error 
 
 	sig, ok := method.Type().(*types.Signature)
 	if !ok {
-		return fmt.Errorf("unexpected method type: %+v", method.Type())
+		return fmt.Errorf("unexpected method type: expected Signature, got: %+v", method.Type())
 	}
 
 	err := processMethodArguments(middleware, &m, sig)

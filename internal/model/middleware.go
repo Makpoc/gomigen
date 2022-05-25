@@ -22,7 +22,7 @@ type Middleware struct {
 func NewMiddleware(forInterfaceName string) *Middleware {
 	mw := &Middleware{
 		InterfaceName: forInterfaceName,
-		Imports:       newImports(),
+		Imports:       NewImports(),
 		Methods:       make([]Method, 0),
 	}
 	mw.Imports.Add(Import{
