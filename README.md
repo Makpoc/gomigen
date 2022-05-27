@@ -140,7 +140,7 @@ The destination directory where the generated package with the middleware will b
 can be provided as an optional parameter.
 
 ```sh
-go run github.com/Makpoc/gomigen/cmd/gomigen -o ../mw . InterfaceName
+go run github.com/Makpoc/gomigen/cmd/gomigen -out ../mw . InterfaceName
 ```
 
 The generated file will import this module's `types` packages so make sure to add that
