@@ -49,6 +49,11 @@ type TwoMethodsOneWithContextAndError interface {
 type MapInArgAndReturn interface {
 	Process(map[string]int) map[interface{}]*interface{}
 }
+
+type ChanInArgAndReturn interface {
+	Process(chan struct{}, chan<- string) <-chan error
+}
+
 type SliceInArgAndReturn interface {
 	Process([]int) []*interface{}
 }

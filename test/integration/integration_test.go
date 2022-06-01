@@ -63,6 +63,7 @@ var _ = Describe("Integration", func() {
 			Entry(nil, "ContextFirstArgumentReturnsErrorNamedVars"),
 			Entry(nil, "TwoMethodsOneWithContextAndError"),
 			Entry(nil, "MapInArgAndReturn"),
+			Entry(nil, "ChanInArgAndReturn"),
 			Entry(nil, "SliceInArgAndReturn"),
 			Entry(nil, "VariadicArgument"),
 			Entry(nil, "EmbeddedInterface"),
