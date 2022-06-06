@@ -11,7 +11,7 @@ import (
 func main() {
 	outputDir := flag.String(
 		"out",
-		"./", // default is current dir
+		"", // default to Interface's directory
 		"optional path to output directory where the generated package with middleware files will be placed",
 	)
 	flag.Parse()
