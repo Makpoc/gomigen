@@ -119,7 +119,7 @@ start/end, processing duration etc.)
 #### OnExit
 
 ```go
-mw.hook.OnExit(context.Context, MethodInfo, error)
+OnExit(context.Context, MethodInfo, error)
 ```
 
 This hook method is called right after the wrapped method returns. If the wrapped
