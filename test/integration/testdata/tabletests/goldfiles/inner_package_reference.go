@@ -33,6 +33,7 @@ func (mw *InnerPackageReferenceMiddleware) Process(arg0 inner.PackageInterface) 
 		Package:   "github.com/Makpoc/gomigen/test/integration/testdata/tabletests/interfaces",
 		Interface: "InnerPackageReference",
 		Method:    "Process",
+		Params:    []interface{}{arg0},
 	}
 
 	ctx := context.Background()

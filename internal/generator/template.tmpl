@@ -31,6 +31,7 @@ func (mw *{{$.MiddlewareName}}) {{.Name}}({{.Arguments.ForMethodSignature}}) ({{
 		Package: "{{$.OriginalPackage.Path}}",
 		Interface: "{{$.InterfaceName}}",
 		Method: "{{.Name}}",
+		Params: {{if .Arguments.VarNames}}[]interface{}{ {{.Arguments.VarNames}} }{{else}}nil{{end}},
 	}
 
 	ctx := {{if .Arguments.ContextVarName}}{{.Arguments.ContextVarName}}{{else}}context.Background(){{end}}

@@ -30,7 +30,7 @@ type ReturnsMultipleValuesWithError interface {
 	Process(int) (int, error)
 }
 type ReturnsMultipleValuesNoError interface {
-	Process(int) (int, error)
+	Process(int) (int, string)
 }
 
 type ContextFirstArgumentReturnsError interface {

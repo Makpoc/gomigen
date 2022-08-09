@@ -5,9 +5,8 @@ import (
 	"fmt"
 	"text/template"
 
-	"golang.org/x/tools/imports"
-
 	"github.com/Makpoc/gomigen/internal/model"
+	"golang.org/x/tools/imports"
 )
 
 // GenerateSource instantiates the middleware template with the provided model and returns a

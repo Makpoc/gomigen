@@ -65,5 +65,5 @@ func (rs Returns) ForMethodSignature() string {
 
 // ReturnVarNames builds a comma-separated list of all return parameters variable names.
 func (rs Returns) ReturnVarNames() string {
-	return Params(rs).varNames()
+	return Params(rs).varNames(true)
 }

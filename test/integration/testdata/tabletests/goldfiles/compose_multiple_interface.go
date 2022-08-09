@@ -32,6 +32,7 @@ func (mw *ComposeMultipleInterfaceMiddleware) ProcessInner(arg0 /* ctx */ contex
 		Package:   "github.com/Makpoc/gomigen/test/integration/testdata/tabletests/interfaces",
 		Interface: "ComposeMultipleInterface",
 		Method:    "ProcessInner",
+		Params:    []interface{}{arg0},
 	}
 
 	ctx := arg0
@@ -46,6 +47,7 @@ func (mw *ComposeMultipleInterfaceMiddleware) Write(arg0 /* p */ []byte) (int /*
 		Package:   "github.com/Makpoc/gomigen/test/integration/testdata/tabletests/interfaces",
 		Interface: "ComposeMultipleInterface",
 		Method:    "Write",
+		Params:    []interface{}{arg0},
 	}
 
 	ctx := context.Background()

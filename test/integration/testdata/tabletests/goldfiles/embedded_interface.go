@@ -32,6 +32,7 @@ func (mw *EmbeddedInterfaceMiddleware) Process(arg0 context.Context, arg1 int) (
 		Package:   "github.com/Makpoc/gomigen/test/integration/testdata/tabletests/interfaces",
 		Interface: "EmbeddedInterface",
 		Method:    "Process",
+		Params:    []interface{}{arg0, arg1},
 	}
 
 	ctx := arg0

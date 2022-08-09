@@ -32,6 +32,7 @@ func (mw *ComposeOverlappingInterfacesMiddleware) Close() error {
 		Package:   "github.com/Makpoc/gomigen/test/integration/testdata/tabletests/interfaces",
 		Interface: "ComposeOverlappingInterfaces",
 		Method:    "Close",
+		Params:    nil,
 	}
 
 	ctx := context.Background()
@@ -46,6 +47,7 @@ func (mw *ComposeOverlappingInterfacesMiddleware) Read(arg0 /* p */ []byte) (int
 		Package:   "github.com/Makpoc/gomigen/test/integration/testdata/tabletests/interfaces",
 		Interface: "ComposeOverlappingInterfaces",
 		Method:    "Read",
+		Params:    []interface{}{arg0},
 	}
 
 	ctx := context.Background()
@@ -60,6 +62,7 @@ func (mw *ComposeOverlappingInterfacesMiddleware) Write(arg0 /* p */ []byte) (in
 		Package:   "github.com/Makpoc/gomigen/test/integration/testdata/tabletests/interfaces",
 		Interface: "ComposeOverlappingInterfaces",
 		Method:    "Write",
+		Params:    []interface{}{arg0},
 	}
 
 	ctx := context.Background()

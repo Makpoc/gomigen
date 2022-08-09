@@ -61,10 +61,20 @@ func (as Arguments) ForMethodInvocationWithoutContext() string {
 	if len(as) == 0 {
 		return ""
 	}
+	p := Params(as)
 	if as.firstVarTypeIsContext() {
-		return Params(as[1:]).varNames()
+		p = Params(as[1:])
 	}
-	return Params(as).varNames()
+	return p.varNames(true)
+}
+
+// VarNames builds a string that holds a comma-separated list of
+// all method argument names.
+func (as Arguments) VarNames() string {
+	if len(as) == 0 {
+		return ""
+	}
+	return Params(as).varNames(false)
 }
 
 func (as Arguments) firstVarTypeIsContext() bool {

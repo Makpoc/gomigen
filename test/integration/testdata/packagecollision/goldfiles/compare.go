@@ -36,6 +36,7 @@ func (mw *CompareMiddleware) Equals(arg0 foo.Foo, arg1 foo0.Foo, arg2 foo1.Foo, 
 		Package:   "github.com/Makpoc/gomigen/test/integration/testdata/packagecollision",
 		Interface: "Compare",
 		Method:    "Equals",
+		Params:    []interface{}{arg0, arg1, arg2, arg3},
 	}
 
 	ctx := context.Background()

@@ -32,6 +32,7 @@ func (mw *ContextFirstArgumentReturnsErrorNamedVarsMiddleware) Process(arg0 /* a
 		Package:   "github.com/Makpoc/gomigen/test/integration/testdata/tabletests/interfaces",
 		Interface: "ContextFirstArgumentReturnsErrorNamedVars",
 		Method:    "Process",
+		Params:    []interface{}{arg0, arg1},
 	}
 
 	ctx := arg0

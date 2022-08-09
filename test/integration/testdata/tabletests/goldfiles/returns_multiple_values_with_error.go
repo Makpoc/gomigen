@@ -32,6 +32,7 @@ func (mw *ReturnsMultipleValuesWithErrorMiddleware) Process(arg0 int) (int, erro
 		Package:   "github.com/Makpoc/gomigen/test/integration/testdata/tabletests/interfaces",
 		Interface: "ReturnsMultipleValuesWithError",
 		Method:    "Process",
+		Params:    []interface{}{arg0},
 	}
 
 	ctx := context.Background()

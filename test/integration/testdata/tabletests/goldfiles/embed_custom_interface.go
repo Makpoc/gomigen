@@ -33,6 +33,7 @@ func (mw *EmbedCustomInterfaceMiddleware) Process(arg0 inner.PackageInterface) i
 		Package:   "github.com/Makpoc/gomigen/test/integration/testdata/tabletests/interfaces",
 		Interface: "EmbedCustomInterface",
 		Method:    "Process",
+		Params:    []interface{}{arg0},
 	}
 
 	ctx := context.Background()

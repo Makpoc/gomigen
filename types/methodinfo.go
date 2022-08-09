@@ -5,4 +5,5 @@ type MethodInfo struct {
 	Package   string
 	Interface string
 	Method    string
+	Params    []interface{}
 }
