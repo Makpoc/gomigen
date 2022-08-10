@@ -32,6 +32,7 @@ func (mw *ChanInArgAndReturnMiddleware) Process(arg0 chan struct{}, arg1 chan<- 
 		Package:   "github.com/Makpoc/gomigen/test/integration/testdata/tabletests/interfaces",
 		Interface: "ChanInArgAndReturn",
 		Method:    "Process",
+		Params:    []interface{}{arg0, arg1},
 	}
 
 	ctx := context.Background()

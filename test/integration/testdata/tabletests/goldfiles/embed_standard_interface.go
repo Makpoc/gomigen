@@ -32,6 +32,7 @@ func (mw *EmbedStandardInterfaceMiddleware) Write(arg0 /* p */ []byte) (int /* n
 		Package:   "github.com/Makpoc/gomigen/test/integration/testdata/tabletests/interfaces",
 		Interface: "EmbedStandardInterface",
 		Method:    "Write",
+		Params:    []interface{}{arg0},
 	}
 
 	ctx := context.Background()

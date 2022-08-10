@@ -32,6 +32,7 @@ func (mw *ContextFirstArgumentMiddleware) Process(arg0 context.Context, arg1 int
 		Package:   "github.com/Makpoc/gomigen/test/integration/testdata/tabletests/interfaces",
 		Interface: "ContextFirstArgument",
 		Method:    "Process",
+		Params:    []interface{}{arg0, arg1},
 	}
 
 	ctx := arg0

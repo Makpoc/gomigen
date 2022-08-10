@@ -32,6 +32,7 @@ func (mw *MapInArgAndReturnMiddleware) Process(arg0 map[string]int) map[interfac
 		Package:   "github.com/Makpoc/gomigen/test/integration/testdata/tabletests/interfaces",
 		Interface: "MapInArgAndReturn",
 		Method:    "Process",
+		Params:    []interface{}{arg0},
 	}
 
 	ctx := context.Background()

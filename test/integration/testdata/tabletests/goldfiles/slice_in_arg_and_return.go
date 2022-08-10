@@ -32,6 +32,7 @@ func (mw *SliceInArgAndReturnMiddleware) Process(arg0 []int) []*interface{} {
 		Package:   "github.com/Makpoc/gomigen/test/integration/testdata/tabletests/interfaces",
 		Interface: "SliceInArgAndReturn",
 		Method:    "Process",
+		Params:    []interface{}{arg0},
 	}
 
 	ctx := context.Background()

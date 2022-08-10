@@ -27,17 +27,18 @@ func NewReturnsMultipleValuesNoErrorMiddleware(
 	}
 }
 
-func (mw *ReturnsMultipleValuesNoErrorMiddleware) Process(arg0 int) (int, error) {
+func (mw *ReturnsMultipleValuesNoErrorMiddleware) Process(arg0 int) (int, string) {
 	methodInfo := types.MethodInfo{
 		Package:   "github.com/Makpoc/gomigen/test/integration/testdata/tabletests/interfaces",
 		Interface: "ReturnsMultipleValuesNoError",
 		Method:    "Process",
+		Params:    []interface{}{arg0},
 	}
 
 	ctx := context.Background()
 
 	ctx = mw.hook.OnEntry(ctx, methodInfo)
 	res0, res1 := mw.next.Process(arg0)
-	mw.hook.OnExit(ctx, methodInfo, res1)
+	mw.hook.OnExit(ctx, methodInfo, nil)
 	return res0, res1
 }

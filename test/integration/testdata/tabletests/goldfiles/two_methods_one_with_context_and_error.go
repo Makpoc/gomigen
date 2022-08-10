@@ -32,6 +32,7 @@ func (mw *TwoMethodsOneWithContextAndErrorMiddleware) ProcessOne(arg0 context.Co
 		Package:   "github.com/Makpoc/gomigen/test/integration/testdata/tabletests/interfaces",
 		Interface: "TwoMethodsOneWithContextAndError",
 		Method:    "ProcessOne",
+		Params:    []interface{}{arg0, arg1},
 	}
 
 	ctx := arg0
@@ -46,6 +47,7 @@ func (mw *TwoMethodsOneWithContextAndErrorMiddleware) ProcessTwo(arg0 /* argInt 
 		Package:   "github.com/Makpoc/gomigen/test/integration/testdata/tabletests/interfaces",
 		Interface: "TwoMethodsOneWithContextAndError",
 		Method:    "ProcessTwo",
+		Params:    []interface{}{arg0},
 	}
 
 	ctx := context.Background()

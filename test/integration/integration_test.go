@@ -118,7 +118,7 @@ func compareFileContent(genFilePath, goldFilePath string) {
 	goldFileContent, err := os.ReadFile(goldFilePath)
 	Expect(err).ToNot(HaveOccurred())
 
-	Expect(string(genFileContent)).To(Equal(string(goldFileContent)))
+	ExpectWithOffset(1, string(genFileContent)).To(Equal(string(goldFileContent)))
 }
 
 func cleanupGeneratedFiles(dir string) error {

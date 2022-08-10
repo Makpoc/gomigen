@@ -32,6 +32,7 @@ func (mw *CustomInterfaceInArgAndReturnMiddleware) Process(arg0 interfaces.Conte
 		Package:   "github.com/Makpoc/gomigen/test/integration/testdata/tabletests/interfaces",
 		Interface: "CustomInterfaceInArgAndReturn",
 		Method:    "Process",
+		Params:    []interface{}{arg0},
 	}
 
 	ctx := context.Background()

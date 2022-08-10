@@ -32,6 +32,7 @@ func (mw *VariadicArgumentMiddleware) Process(arg0 string, arg1 ...int) {
 		Package:   "github.com/Makpoc/gomigen/test/integration/testdata/tabletests/interfaces",
 		Interface: "VariadicArgument",
 		Method:    "Process",
+		Params:    []interface{}{arg0, arg1},
 	}
 
 	ctx := context.Background()

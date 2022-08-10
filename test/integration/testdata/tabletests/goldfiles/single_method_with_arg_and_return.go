@@ -32,6 +32,7 @@ func (mw *SingleMethodWithArgAndReturnMiddleware) Process(arg0 int) int {
 		Package:   "github.com/Makpoc/gomigen/test/integration/testdata/tabletests/interfaces",
 		Interface: "SingleMethodWithArgAndReturn",
 		Method:    "Process",
+		Params:    []interface{}{arg0},
 	}
 
 	ctx := context.Background()

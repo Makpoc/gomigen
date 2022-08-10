@@ -15,12 +15,12 @@ type Param struct {
 	IsVariadic    bool
 }
 
-func (pl Params) varNames() string {
+func (pl Params) varNames(spreadVariadic bool) string {
 	varNames := make([]string, 0, len(pl))
 	var varIdx int
 	for _, p := range pl {
 		name := p.generatedName
-		if p.IsVariadic {
+		if p.IsVariadic && spreadVariadic {
 			name = name + "..."
 		}
 		varNames = append(varNames, name)

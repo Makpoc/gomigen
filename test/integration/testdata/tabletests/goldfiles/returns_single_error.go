@@ -32,6 +32,7 @@ func (mw *ReturnsSingleErrorMiddleware) Process(arg0 int) error {
 		Package:   "github.com/Makpoc/gomigen/test/integration/testdata/tabletests/interfaces",
 		Interface: "ReturnsSingleError",
 		Method:    "Process",
+		Params:    []interface{}{arg0},
 	}
 
 	ctx := context.Background()
