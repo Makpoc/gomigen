@@ -59,12 +59,38 @@ func loadInterface(dir string, interfaceName string) (pkg *packages.Package, ifa
 	if targetIFaceObj == nil {
 		return nil, nil, fmt.Errorf("no interface named %s in package %s", interfaceName, targetPackage.PkgPath)
 	}
-	targetIFace, ok := (targetIFaceObj.Type()).(*types.Named)
-	if !ok {
-		return nil, nil, fmt.Errorf("%s is not an interface declaration", interfaceName)
-	}
 
-	return targetPackage, targetIFace, nil
+	targetIFaceObjectType := targetIFaceObj.Type()
+	switch targetIFace := targetIFaceObjectType.(type) {
+	case *types.Named:
+		return targetPackage, targetIFace, nil
+	case *types.Alias:
+		underlyingNamed, err := unalias(targetIFace)
+		if err == nil {
+			return targetPackage, underlyingNamed, nil
+		}
+		//underlyingTargetIFace, ok := targetIFace.Rhs().(*types.Named)
+		//if ok {
+		//	return targetPackage, underlyingTargetIFace, nil
+		//}
+	}
+	return nil, nil, fmt.Errorf("%s is not a known interface declaration", interfaceName)
+}
+
+func unalias(t types.Type) (*types.Named, error) {
+	maxDepth := 5
+	if alias, ok := t.(*types.Alias); ok {
+		rhs := alias.Rhs()
+		for i := 0; i < maxDepth; i++ {
+			switch unaliased := rhs.(type) {
+			case *types.Alias:
+				rhs = unaliased.Rhs()
+			case *types.Named:
+				return unaliased, nil
+			}
+		}
+	}
+	return nil, fmt.Errorf("could not unalias type %s", t.String())
 }
 
 func processMethod(middleware *model.Middleware, method *types.Selection) error {

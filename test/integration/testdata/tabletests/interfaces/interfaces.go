@@ -98,3 +98,5 @@ type ComposeOverlappingInterfaces interface {
 	io.WriteCloser
 	io.ReadCloser
 }
+
+type AliasedInterface = inner.GenericInterface[string]
