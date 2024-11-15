@@ -75,6 +75,7 @@ var _ = Describe("Integration", func() {
 			Entry(nil, "ComposeMultipleInterface"),
 			Entry(nil, "ExtendsAnotherInterface"),
 			Entry(nil, "ComposeOverlappingInterfaces"),
+			Entry(nil, "AliasedInterface"),
 		)
 	})
 	Describe("duplicate packages", func() {
