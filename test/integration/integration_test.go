@@ -111,6 +111,36 @@ var _ = Describe("Integration", func() {
 			compareFileContent(genFilePath, goldFilePath)
 		})
 	})
+	Describe("interface lookup", func() {
+		const brokenPkgRelPath = testDataRelPath + "/" + "brokenpackage"
+
+		BeforeEach(func() {
+			Expect(cleanupGeneratedFiles(brokenPkgRelPath + "/" + generatedDirName + "/" + "brokenpackagemw")).To(Succeed())
+		})
+
+		run := func(pkgDirRelPath, interfaceName string) error {
+			return app.New(pkgDirRelPath, interfaceName,
+				app.WithVersion("test"),
+				app.WithOutputDirectory(pkgDirRelPath+"/"+generatedDirName),
+				app.WithLogger(log.New(GinkgoWriter, "", log.LstdFlags)),
+			).Run()
+		}
+
+		It("returns a not found error for a missing interface", func() {
+			err := run(testDataRelPath+"/tabletests/interfaces", "Missing")
+			Expect(err).To(MatchError(`failed to parse interface "Missing": ` +
+				"failed to find interface Missing in package " +
+				"github.com/Makpoc/gomigen/test/integration/testdata/tabletests/interfaces"))
+		})
+		It("returns the package load errors when the package fails to load", func() {
+			err := run(testDataRelPath+"/unloadablepackage", "Excluded")
+			Expect(err).To(MatchError(ContainSubstring("build constraints exclude all Go files")))
+		})
+		It("generates middleware when an unrelated declaration fails to compile", func() {
+			err := run(brokenPkgRelPath, "Valid")
+			Expect(err).ToNot(HaveOccurred())
+		})
+	})
 })
 
 func compareFileContent(genFilePath, goldFilePath string) {

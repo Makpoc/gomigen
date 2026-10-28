@@ -1,6 +1,7 @@
 package parser
 
 import (
+	"errors"
 	"fmt"
 	"go/types"
 
@@ -44,7 +45,7 @@ func Parse(dir, interfaceName string) (*model.Middleware, error) {
 
 func loadInterface(dir string, interfaceName string) (pkg *packages.Package, iface *types.Named, err error) {
 	p, err := packages.Load(&packages.Config{
-		Mode: packages.NeedName | packages.NeedImports | packages.NeedTypes,
+		Mode: packages.NeedName | packages.NeedImports | packages.NeedDeps | packages.NeedTypes,
 	}, dir)
 	if err != nil {
 		return nil, nil, fmt.Errorf("failed to load packages in directory %q: %w", dir, err)
@@ -56,8 +57,13 @@ func loadInterface(dir string, interfaceName string) (pkg *packages.Package, ifa
 	targetPackage := p[0]
 	pkgScope := targetPackage.Types.Scope()
 	targetIFaceObj := pkgScope.Lookup(interfaceName)
+	if targetIFaceObj == nil && len(targetPackage.Errors) > 0 {
+		return nil, nil, fmt.Errorf("failed to find interface %s in package %s: %w",
+			interfaceName, targetPackage.PkgPath, joinPackageErrors(targetPackage.Errors))
+	}
 	if targetIFaceObj == nil {
-		return nil, nil, fmt.Errorf("no interface named %s in package %s", interfaceName, targetPackage.PkgPath)
+		return nil, nil, fmt.Errorf("failed to find interface %s in package %s",
+			interfaceName, targetPackage.PkgPath)
 	}
 
 	targetIFaceObjectType := targetIFaceObj.Type()
@@ -75,6 +81,14 @@ func loadInterface(dir string, interfaceName string) (pkg *packages.Package, ifa
 		//}
 	}
 	return nil, nil, fmt.Errorf("%s is not a known interface declaration", interfaceName)
+}
+
+func joinPackageErrors(pkgErrs []packages.Error) error {
+	errs := make([]error, 0, len(pkgErrs))
+	for _, e := range pkgErrs {
+		errs = append(errs, e)
+	}
+	return errors.Join(errs...)
 }
 
 func unalias(t types.Type) (*types.Named, error) {
